@@ -52,17 +52,13 @@ const (
 
 func Init() (*FliSdk, error) {
 	context := C.FliSdk_init_V2()
-	if context != nil {
-		// runtime.SetFinalizer(&context, func(f *FliSdk) {
-		// 	f.Exit()
-		// })
-
-		return &FliSdk{
-			context: context,
-		}, nil
+	if context == nil {
+		return nil, fmt.Errorf("flisdk: Unable to init SDK")
 	}
 
-	return nil, fmt.Errorf("flisdk: Unable to init SDK")
+	return &FliSdk{
+		context: context,
+	}, nil
 }
 
 func (f *FliSdk) Exit() {
